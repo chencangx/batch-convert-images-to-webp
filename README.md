@@ -4,5 +4,6 @@ Batch convert images to webP in one directory  
 - -i: source directory
 - -o: output directory
 - -q: specify quality
+
 commandline:
 `java -jar ToWebp.jar -i /source -o /dest`
