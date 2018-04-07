@@ -4,9 +4,9 @@ Batch convert images to webP in one directory  
 - for linux you can also use the following command:
   ```bash
   $ for file in *
-> do
-> cwebp -q 80 "$file" -o "$file.webp"
-> done
+  do
+  cwebp -q 80 "$file" -o "$file.webp"
+  done
   ```
 - -i: source directory.
 - -o: output directory.
