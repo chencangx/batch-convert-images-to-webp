@@ -27,9 +27,12 @@ public class ToWebp {
     Process p = null;
     for (final File fileEntry : srcPath.listFiles()) {
       if (fileEntry.isFile()) {
-        builder =
-            new ProcessBuilder("cwebp", "-q", quality, fileEntry.getAbsolutePath(), "-o", dest + "/"
-                + fileEntry.getName().substring(0, fileEntry.getName().lastIndexOf(".")) + ".webp");
+        if (fileEntry.getName().endsWith(".jpg") || fileEntry.getName().endsWith(".jpeg")
+            || fileEntry.getName().endsWith(".png") || fileEntry.getName().endsWith(".gif")
+            || fileEntry.getName().endsWith(".bmp") || fileEntry.getName().endsWith(".tif"))
+          builder = new ProcessBuilder("cwebp", "-q", quality, fileEntry.getAbsolutePath(), "-o",
+              dest + "/" + fileEntry.getName().substring(0, fileEntry.getName().lastIndexOf("."))
+                  + ".webp");
         builder.redirectErrorStream(true);
         System.out.println(fileEntry.getName());
         p = builder.start();
