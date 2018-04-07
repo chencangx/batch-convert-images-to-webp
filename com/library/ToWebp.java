@@ -1,10 +1,12 @@
 package com.library;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ToWebp {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, InterruptedException {
     String src = null;
     String dest = null;
     String quality = "80";
@@ -21,12 +23,20 @@ public class ToWebp {
     }
     File srcPath = new File(src);
     ProcessBuilder builder = new ProcessBuilder();
+    builder.redirectErrorStream(true);
+    Process p = null;
     for (final File fileEntry : srcPath.listFiles()) {
-      builder = new ProcessBuilder("cmd", "/c", "cwebp", "-q", quality, fileEntry.getAbsolutePath(),
-          "-o", dest + "/" + fileEntry.getName().substring(0, fileEntry.getName().lastIndexOf("."))
-              + ".webp");
-      System.out.println(fileEntry.getName());
-      builder.start();
+      if (fileEntry.isFile()) {
+        builder =
+            new ProcessBuilder("cwebp", "-q", quality, fileEntry.getAbsolutePath(), "-o", dest + "/"
+                + fileEntry.getName().substring(0, fileEntry.getName().lastIndexOf(".")) + ".webp");
+        builder.redirectErrorStream(true);
+        System.out.println(fileEntry.getName());
+        p = builder.start();
+        p.waitFor();
+        BufferedReader lineReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        lineReader.lines().forEach(System.out::println);
+      }
     }
   }
 }
